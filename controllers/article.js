@@ -121,6 +121,27 @@ Model.find({}).sort({
           })
         }
 
+         // Mosaique
+        if (article.Link.split('.')[1] == "mosaiquefm")  {
+          article.FullDescription = ""
+          $('div.desc p').each(function (i, arc) {
+            article.FullDescription += $(this).text().trim() ;
+            scrapped = true ;
+          });
+          res.json(article);
+        }
+
+        // webmanagercenter
+        if (article.Link.split('.')[1] == "webmanagercenter") {
+          article.FullDescription = ""
+          $('div.td-post-content p').each(function(i,arc){
+            article.FullDescription += $(arc).text();
+            scrapped = true ;
+          });
+          res.json(article);
+        }
+
+
       }
         res.json(article);
       });
@@ -175,9 +196,12 @@ Model.find({}).sort({
                               }
                           }
                           if (i = chunks.length) {
-                             if (commonsFound >0 ) {T.push({"_id":j._id,"name":j.name,"commonsFound":commonsFound,
+                             if (commonsFound >0 ) {
+                                 if(j._journal){
+
+                                 T.push({"_id":j._id,"name":j.name,"commonsFound":commonsFound,
                                  "journalPicture":j._journal.picture,"ArticlePicture":j.Picture,"Description":j.Description
-                             })};
+                             })}};
                              console.log(commonsFound + " common substrings found.");
 
                           }
@@ -251,7 +275,29 @@ Model.find({}).sort({
         response.setHeader('Access-Control-Allow-Credentials', true);
 
 
-    }
+    } ,
+    listAll: function (req, res, next) {
+
+        res.setHeader('Access-Control-Allow-Origin', 'http://localhost:4200');
+        // Request methods you wish to allow
+        res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+
+        // Request headers you wish to allow
+        res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+        // Set to true if you need the website to include cookies in the requests sent
+        // to the API (e.g. in case you use sessions)
+        res.setHeader('Access-Control-Allow-Credentials', true);
+
+
+        Model.find({}, function (err, article) {
+            if (err)
+                return next(err);
+            res.json(article)
+        });
+
+    },
+
+
 
 
 }

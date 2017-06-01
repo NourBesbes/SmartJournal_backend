@@ -114,7 +114,23 @@ module.exports= {
            });
       });
       });
-  }
+  },
+    deleteOne: function(req, res, next) {
+      journal.remove({_id: req.body.id}, function (err) {
+            if (!err) {
+                res.json({message: 'Deleted'})
+                console.log('notification!');
+            }
+            else {
+                res.json({message: 'ERROR'})
+                console.log('error');
+            }
+
+        });
+
+    },
+
+
 
 
 }

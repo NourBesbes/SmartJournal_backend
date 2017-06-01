@@ -21,6 +21,8 @@ var cronjob = function() {
 
                 FB.api(`${lien}/posts?fields=likes.summary(true),description,full_picture,link,name,id,created_time`, function (response) {
 
+                    if (response.data) {
+
                     for (var i = 0; i < response.data.length; i++) {
                         if (response['data'][i]['description'] && response['data'][i]['full_picture']
                             &&response['data'][i]['name']&&response['data'][i]['link']
@@ -61,7 +63,7 @@ var cronjob = function() {
 
 
                         }
-                    } });
+                    }} });
 
 
             })

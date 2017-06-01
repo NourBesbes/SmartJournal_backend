@@ -2,6 +2,8 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var mongoosastic=require('mongoosastic');
 var journal = require('../models/journal.js');
+var textSearch = require('mongoose-text-search');
+
 var ArticleSchema = new Schema({
     name:String,
     Description: String,
@@ -14,11 +16,17 @@ var ArticleSchema = new Schema({
     _journal : { type: Schema.Types.ObjectId, ref: 'journal' }
 });
 
-ArticleSchema.plugin(mongoosastic,{
+
+
+ArticleSchema.index({ name: 'text', Description: 'text',FullDescription:'text' });
+
+/*ArticleSchema.plugin(textSearch);
+ArticleSchema.index({ '$**': 'text' });*/
+/*ArticleSchema.plugin(mongoosastic,{
     hosts:[
         'localhost:9200'
     ]
-});
+});*/
 
 
 
